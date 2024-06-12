@@ -1,0 +1,626 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CC - HTML to XML Converter</title>
+    <style>
+
+
+        h1 {
+            background-color: #f6c507;
+            padding: 10px;
+            font-family: system-ui;
+            text-align: center;
+            color: #000;
+        }
+
+        .converter-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+        }
+
+        .input-container {
+            width: 45%;
+            margin-right: 2%;
+        }
+
+        textarea {
+            width: 100%;
+            height: 200px;
+            border: 1px solid #000;
+            padding: 10px;
+        }
+
+        .output-container {
+            width: 50%;
+            background-color: #000;
+            color: #fff;
+            padding: 10px;
+        }
+
+        button {
+            margin-top: 10px;
+            padding: 15px 35px;
+            background-color: #f6c507;
+            color: #000;
+            border: none;
+            cursor: pointer;
+        }
+        
+
+        button:hover {
+            background-color: #e5b406;
+        }
+
+   /* Add basic styles for the navigation bar */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            font-family: system-ui;
+            padding: 0;
+        }
+
+        @media screen and (max-width: 768px) {
+            .converter-container {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .input-container {
+                width: 100%;
+                margin-right: 0;
+            }
+
+            .output-container {
+                width: 100%;
+                margin-top: 20px;
+            }
+
+            button {
+                margin-top: 10px;
+                width: 18%;
+            }
+
+            textarea {
+                height: 150px;
+            }
+        }
+ 
+
+
+
+        .navbar {
+            background-color: #f6c507;
+            overflow: hidden;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+         
+        }
+
+        .navbar a {
+            color: #000;
+            text-align: center;
+            text-decoration: none;
+            padding: 14px 16px;
+        }
+
+        .navbar a:hover {
+            background-color: #ddd;
+            color: black;
+        }
+
+        /* Make the website name and navbar inline */
+        .brand {
+            display: flex;
+            align-items: center;
+            margin-left: 20px; /* Add margin for spacing on the left */
+        }
+
+        .navbar-links {
+            margin-right: 20px; /* Add margin for spacing on the right */
+        }
+
+        /* Responsive styles */
+        @media (max-width: 768px) {
+            .navbar {
+                flex-direction: column;
+            }
+
+            .navbar-links {
+                margin: 10px 0; /* Adjust vertical margin for smaller screens */
+            }
+        }
+
+        .banner {
+            background-image: url('your-banner-image.jpg');
+            background-size: cover;
+            background-position: center;
+            height: 300px; /* Adjust the height as needed */
+            text-align: center;
+            color: white;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .banner h1 {
+            font-size: 36px;
+            margin: 0;
+        }
+
+        /* Add spacing between the banner and navigation bar */
+        .spacer {
+            height: 20px; /* Adjust the height for spacing */
+        }
+
+        .footer {
+            background-color: #f6c507;
+            color: black;
+            padding: 10px;
+            text-align: center;
+        }
+
+        /* Responsive styles */
+        @media (max-width: 768px) {
+            .footer {
+                padding: 10px;
+            }
+        }
+
+
+/* Styles for the pop-up containers */
+.popup {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    z-index: 1;
+}
+
+
+.popup-content {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+    max-height: 400px; /* Set the maximum height here */
+    overflow-y: auto; /* Enable vertical scrolling when content exceeds the max height */
+}
+
+.close {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 24px;
+    cursor: pointer;
+}
+
+
+
+/* Style for the usage-section and its headings */
+.usage-section {
+    border: 2px solid #f6c507; /* Add a yellow border */
+    padding: 20px;
+    margin: 20px 0;
+    border-radius: 10px; /* Add rounded corners for a more attractive look */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2); /* Add a subtle shadow */
+}
+
+
+/* Style for the benefits and additional use cases lists */
+.usage-section ul, .usage-section ol {
+    list-style-type: square; /* Use square bullets for lists */
+    padding-left: 20px;
+}
+
+/* Style for individual list items */
+.usage-section li {
+    margin-bottom: 10px;
+}
+
+/* CSS for the "banner" class */
+.banner {
+    position: relative; /* Create a positioning context for child elements */
+    max-width: 100%; /* Ensure the image doesn't exceed the container's width */
+    overflow: hidden; /* Hide any overflowing content */
+}
+
+/* Style the image to cover the "banner" container */
+.banner img {
+    width: 100%; /* Make the image take the full width of the container */
+    height: auto; /* Automatically adjust the image's height to maintain aspect ratio */
+}
+
+
+
+
+    </style>
+</head>
+<body>
+
+<!-- Navigation Bar -->
+<div class="navbar">
+    <div class="brand">
+        <h1>HTML TO XML</h1>
+        <!-- Mobile Menu Bar -->
+  
+    </div>
+ 
+    <div class="navbar-links" id="navbar-links">
+        <button id="home-button">Home</button>
+
+        <script>
+            // Get a reference to the "Home" button by its ID
+            const homeButton = document.getElementById('home-button');
+        
+            // Add a click event listener to the button
+            homeButton.addEventListener('click', () => {
+                // Redirect to the desired page (index.html in this case)
+                window.location.href = 'index.html';
+            });
+        </script>
+        
+        
+        <button id="about-button">About</button>
+        <button id="privacy-policy-button">Privacy Policy</button>
+        <button id="disclaimer-button">Disclaimer</button>
+        <button id="contact-button">Contact</button>
+    </div>
+</div>
+
+
+
+    
+
+<!-- About Pop-up -->
+<div id="about-popup" class="popup">
+    <div class="popup-content">
+        <span class="close" id="about-close">&times;</span>
+        <h1>About</h1>
+        <p>Welcome to Code With Sami, your go-to source for creative coding and programming solutions. We're passionate about unlocking innovative solutions and helping you unleash your creativity through expert coding services and guidance.</p>
+        
+        <h3>Our Mission</h3>
+        <p>At Code With Sami, our mission is to empower individuals and businesses by providing high-quality coding services and programming expertise. We believe that coding is a powerful tool for turning ideas into reality and solving complex problems.</p>
+
+        <h3>What We Offer</h3>
+        <p>We offer a wide range of services and resources, including:</p>
+        <ul>
+            <li><strong>CC - HTML to XML Converter:</strong> Our free online tool helps you convert HTML code into XML format, making data transformation and integration easier.</li>
+            <li><strong>Creative Coding:</strong> Explore the world of creative coding with our tutorials and resources, and learn how to use code to create art, animations, and interactive experiences.</li>
+            <li><strong>Programming Solutions:</strong> Whether you need web development, software development, or custom coding solutions, our team of experts is here to assist you.</li>
+            <li><strong>Expert Guidance:</strong> Get personalized coding guidance and support from experienced professionals who are passionate about helping you succeed.</li>
+        </ul>
+        
+        <h3>Connect with Us</h3>
+        <p>We're excited to connect with you and be a part of your coding journey. Feel free to reach out to us with your questions, ideas, or projects. You can contact us through our website, social media, or the contact information provided in the "Contact" section.</p>
+
+        <p>Thank you for choosing Code With Sami as your coding and programming partner. We look forward to helping you achieve your coding goals!</p>
+    </div>
+</div>
+
+<!-- Privacy Policy Pop-up -->
+<div id="privacy-policy-popup" class="popup">
+    <div class="popup-content">
+        <span class="close" id="privacy-policy-close">&times;</span>
+        <h1>Privacy Policy</h1>
+        <h2>Information We Collect</h2>
+        <p>We may collect the following types of information:</p>
+        <ul>
+            <li>Your name and contact information</li>
+            <li>Demographic information</li>
+            <li>Usage data</li>
+        </ul>
+
+        <h2>How We Use Your Information</h2>
+        <p>We use your information for various purposes, including:</p>
+        <ul>
+            <li>Providing and maintaining our services</li>
+            <li>Improving our services</li>
+            <li>Responding to your inquiries</li>
+        </ul>
+
+        <h2>Disclosure of Your Information</h2>
+        <p>We may disclose your information in certain situations, such as:</p>
+        <ul>
+            <li>With your consent</li>
+            <li>To comply with legal obligations</li>
+        </ul>
+
+        <h2>Security</h2>
+        <p>We take security measures to protect your information.</p>
+
+        <h2>Changes to This Privacy Policy</h2>
+        <p>We may update our Privacy Policy from time to time.</p>
+
+        <h2>Contact Us</h2>
+        <p>If you have any questions about our Privacy Policy, please contact us at privacy@example.com.</p>
+    </div>
+</div>
+
+<!-- Disclaimer Pop-up -->
+<div id="disclaimer-popup" class="popup">
+    <div class="popup-content">
+        <span class="close" id="disclaimer-close">&times;</span>
+        <h1>Disclaimer</h1>
+        <h2>Disclaimer</h2>
+        <p>The following disclaimer outlines the terms and conditions of using the services provided by Code With Sami:</p>
+        
+        <h3>Accuracy of Information</h3>
+        <p>While we strive to provide accurate and up-to-date information, Code With Sami makes no representations or warranties of any kind, express or implied, about the completeness, accuracy, reliability, suitability, or availability of the information provided on this website.</p>
+        
+        <h3>Use of the CC - HTML to XML Converter</h3>
+        <p>Code With Sami offers the CC - HTML to XML Converter as a free online tool for informational and educational purposes. Users are responsible for verifying the accuracy and suitability of the converted content for their specific needs. We do not guarantee error-free conversion or compatibility with all HTML documents.</p>
+        
+        <h3>Limitation of Liability</h3>
+        <p>Code With Sami shall not be liable for any loss or damage arising out of or in connection with the use of this website or the CC - HTML to XML Converter. Users use the service at their own risk.</p>
+        
+        <h3>External Links</h3>
+        <p>This website may contain links to external websites or resources. Code With Sami is not responsible for the content, availability, or practices of these external sites and does not endorse any products or services mentioned on them.</p>
+        
+        <h3>Changes to Terms</h3>
+        <p>Code With Sami reserves the right to modify or revise these terms and conditions at any time without notice. Users are encouraged to review this disclaimer periodically.</p>
+        
+        <p>By using this website and the CC - HTML to XML Converter, you agree to comply with and be bound by this disclaimer. If you do not agree with any part of these terms and conditions, please do not use our services.</p>
+    </div>
+</div>
+
+<!-- Contact Pop-up -->
+<div id="contact-popup" class="popup">
+    <div class="popup-content">
+        <span class="close" id="contact-close">&times;</span>
+        <h1>Contact</h1>
+        <h2>Contact Information</h2>
+    <p>If you have any questions or need assistance, please feel free to contact us:</p>
+    
+    <ul>
+        <li><strong>Mobile:</strong> +355 6151704</li>
+        <li><strong>Email:</strong> <a href="mailto:info.samimushtaq@gmail.com">info.samimushtaq@gmail.com</a></li>
+    </ul>
+    
+    <p>Our team, led by Code With Sami, is here to help you with any inquiries you may have. Whether you need support with our CC - HTML to XML Converter or have other coding and programming needs, we're at your service.</p>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+    <!-- Spacer for spacing between navbar and banner -->
+    <div class="spacer"></div>
+
+    <!-- Banner -->
+    <div class="banner">
+        <img src="banner.jpg" alt="">
+        <!-- <h1>Your Banner Text</h1>
+        <p>Tagline or description</p> -->
+    </div>
+
+    <h1>CC - HTML to XML Converter</h1>
+    <div class="converter-container">
+        <div class="input-container">
+            <p>Paste your HTML code below:</p>
+            <textarea id="htmlInput"></textarea>
+            <button onclick="convertToXML()">Convert to XML</button>
+            <button onclick="copyToClipboard()">Copy</button>
+            <button onclick="downloadXML()">Download</button>
+            <button onclick="clearInput()">Clear</button>
+        </div>
+        <div class="output-container">
+            <h2>XML Output:</h2>
+            <pre id="xmlOutput"></pre>
+        </div>
+    </div>
+
+
+
+    <!-- After the XML Output -->
+<!-- Usage Section -->
+<div class="usage-section">
+    <h1>How to Use the CC - HTML to XML Converter</h1>
+    <p>The CC - HTML to XML Converter is a versatile tool that simplifies the process of converting HTML code into XML format. Here's a comprehensive guide on how to use it:</p>
+    <ol>
+        <li><strong>Paste Your HTML Code:</strong> Start by copying the HTML code you want to convert. This can be code snippets, full web pages, or any HTML content you wish to transform.</li>
+        <li><strong>Access the Converter:</strong> Navigate to the CC - HTML to XML Converter on our website, where you'll find a dedicated interface for this purpose.</li>
+        <li><strong>Paste HTML Code:</strong> Inside the provided textarea, right-click and paste the HTML code you've copied. Alternatively, you can use the keyboard shortcut (Ctrl+V or Command+V).</li>
+        <li><strong>Convert to XML:</strong> After pasting the HTML code, click the "Convert to XML" button. The converter will process your HTML content and generate an XML representation.</li>
+        <li><strong>View the XML Output:</strong> Once the conversion is complete, the XML output will be displayed below the textarea. You can now access, review, and even copy the XML version of your HTML code.</li>
+    </ol>
+
+    <h1>Benefits of Using Our Converter</h1>
+    <p>Our CC - HTML to XML Converter offers numerous benefits that cater to a wide range of users, from web developers to data analysts:</p>
+    <ul>
+        <li><strong>Efficiency:</strong> Save time and effort by automating the HTML to XML conversion process.</li>
+        <li><strong>Preservation of Structure:</strong> Maintain the structural integrity of your HTML code during conversion, ensuring that the XML output retains the original hierarchy.</li>
+        <li><strong>Use Cases:</strong> Explore various use cases for this tool, including data extraction, content migration, and more.</li>
+        <li><strong>Accessibility:</strong> Easily access the XML output for further processing, analysis, or integration into your projects.</li>
+        <li><strong>Compatibility:</strong> Ensure compatibility with systems and applications that require XML data by effortlessly converting your HTML content.</li>
+    </ul>
+
+    <h1>Additional Use Cases</h1>
+    <p>While the primary purpose of the CC - HTML to XML Converter is to transform HTML code into XML, its versatility extends to multiple scenarios:</p>
+    <ul>
+        <li><strong>Data Migration:</strong> Seamlessly transfer data from HTML sources to XML-based systems, databases, or other data repositories.</li>
+        <li><strong>Web Scraping:</strong> Extract structured data from websites by converting their HTML content into machine-readable XML format.</li>
+        <li><strong>XML Data Generation:</strong> Create custom XML data from existing HTML sources, which can be valuable for integration, data exchange, or XML-based reporting.</li>
+        <li><strong>Content Transformation:</strong> Convert web pages or content pieces from HTML to XML for use in content management systems (CMS) or digital publishing platforms.</li>
+        <li><strong>Data Analysis:</strong> Facilitate data analysis and manipulation by converting HTML data into XML format, making it more accessible for data scientists and analysts.</li>
+    </ul>
+
+    <h1>Advanced Features</h1>
+    <p>Our CC - HTML to XML Converter includes advanced features to enhance your experience:</p>
+    <ul>
+        <li><strong>Customization:</strong> Tailor the converter settings to meet your specific requirements, such as handling specific HTML tags or attributes.</li>
+        <li><strong>Batch Conversion:</strong> Convert multiple HTML documents into XML in one go, streamlining large-scale data transformation projects.</li>
+        <li><strong>Scripting Support:</strong> Incorporate scripting or automation to integrate the converter into your workflows or applications.</li>
+    </ul>
+
+
+    <h1>Benefits of the CC - HTML to XML Converter</h1>
+    <p>The CC - HTML to XML Converter offers numerous benefits:</p>
+    <ul>
+        <li>**Streamlined Workflow:** Simplify your data transformation process and save valuable time.</li>
+        <li>**Data Integration:** Seamlessly integrate HTML data into XML-based systems or databases.</li>
+        <li>**Content Management:** Easily migrate web content from HTML to XML for efficient content management.</li>
+        <li>**Data Analysis:** Enable data scientists and analysts to work with structured XML data.</li>
+        <li>**Data Extraction:** Extract valuable information from websites by converting HTML to XML.</li>
+        <li>**Error Reduction:** Minimize errors and ensure consistency in data representation.</li>
+    </ul>
+    
+    <h1>Use Cases in Detail</h1>
+    <p>Let's delve deeper into some common use cases:</p>
+    <ul>
+        <li>**E-Commerce:** Convert product listings and descriptions from HTML to XML for catalog management and integration with e-commerce platforms.</li>
+        <li>**Web Scraping:** Automate web scraping tasks by converting scraped HTML data into XML, facilitating data analysis.</li>
+        <li>**Data Reporting:** Generate custom XML reports from HTML sources, enhancing data reporting capabilities.</li>
+        <li>**Data Migration:** Seamlessly transfer data from legacy HTML systems to modern XML-based databases.</li>
+        <li>**Content Publishing:** Prepare web content in XML format for publishing to content management systems (CMS).</li>
+    </ul>
+    
+    <h1>Advanced Features and Customization</h1>
+    <p>The CC - HTML to XML Converter offers advanced features:</p>
+    <ul>
+        <li>**Customization:** Tailor the converter settings to handle specific HTML tags or attributes according to your needs.</li>
+        <li>**Batch Conversion:** Efficiently convert multiple HTML documents into XML in one go, perfect for large-scale projects.</li>
+        <li>**Scripting Support:** Incorporate scripting or automation to integrate the converter into your workflows or applications seamlessly.</li>
+    </ul>
+    
+    <h1>Enhancing Data Accessibility</h1>
+    <p>By converting HTML to XML, you enhance data accessibility:</p>
+    <ul>
+        <li>**Machine Readability:** XML data is machine-readable, enabling automated data processing and analysis.</li>
+        <li>**Interoperability:** XML format ensures compatibility with a wide range of systems and applications.</li>
+        <li>**Data Standardization:** Standardize data structures for consistency in data handling and reporting.</li>
+    </ul>
+    
+    <h1>Conclusion</h1>
+    <p>The CC - HTML to XML Converter empowers users across industries by simplifying data transformation, enhancing data accessibility, and enabling a wide array of use cases. Whether you're a web developer, data analyst, or content manager, this tool is your gateway to unlocking the full potential of HTML-to-XML conversion.</p>
+    
+    <p>Make the most of this versatile converter and streamline your data-related tasks today!</p>
+    
+
+
+
+
+</div>
+
+
+
+
+
+
+    <!-- Footer -->
+    <div class="footer">
+        <p>&copy; 2024 <a href="#">Campus Cinema</a> . All Rights Reserved.</p>
+    </div>
+
+
+
+
+    <script>
+        function convertToXML() {
+            // Get the HTML input from the textarea
+            const htmlInput = document.getElementById('htmlInput').value;
+
+            // Create a new DOMParser
+            const parser = new DOMParser();
+
+            // Parse the HTML input
+            const xmlDoc = parser.parseFromString(htmlInput, 'text/html');
+
+            // Serialize the XML document to a string
+            const xmlString = new XMLSerializer().serializeToString(xmlDoc);
+
+            // Display the XML output
+            document.getElementById('xmlOutput').textContent = xmlString;
+        }
+
+        function copyToClipboard() {
+            const xmlOutput = document.getElementById('xmlOutput');
+            const range = document.createRange();
+            range.selectNode(xmlOutput);
+            window.getSelection().removeAllRanges();
+            window.getSelection().addRange(range);
+            document.execCommand('copy');
+            window.getSelection().removeAllRanges();
+            alert('XML copied to clipboard!');
+        }
+
+        function downloadXML() {
+            const xmlOutput = document.getElementById('xmlOutput').textContent;
+            const blob = new Blob([xmlOutput], { type: 'application/xml' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'output.xml';
+            a.style.display = 'none';
+            document.body.appendChild(a);
+            a.click();
+            window.URL.revokeObjectURL(url);
+        }
+
+        function clearInput() {
+            document.getElementById('htmlInput').value = '';
+            document.getElementById('xmlOutput').textContent = '';
+        }
+
+
+        document.getElementById("about-button").addEventListener("click", function () {
+    document.getElementById("about-popup").style.display = "block";
+});
+
+document.getElementById("about-close").addEventListener("click", function () {
+    document.getElementById("about-popup").style.display = "none";
+});
+
+
+document.getElementById("privacy-policy-button").addEventListener("click", function () {
+    document.getElementById("privacy-policy-popup").style.display = "block";
+});
+
+document.getElementById("disclaimer-button").addEventListener("click", function () {
+    document.getElementById("disclaimer-popup").style.display = "block";
+});
+
+document.getElementById("contact-button").addEventListener("click", function () {
+    document.getElementById("contact-popup").style.display = "block";
+});
+
+
+
+document.getElementById("privacy-policy-close").addEventListener("click", function () {
+    document.getElementById("privacy-policy-popup").style.display = "none";
+});
+
+document.getElementById("disclaimer-close").addEventListener("click", function () {
+    document.getElementById("disclaimer-popup").style.display = "none";
+});
+
+document.getElementById("contact-close").addEventListener("click", function () {
+    document.getElementById("contact-popup").style.display = "none";
+});
+
+
+
+
+
+
+
+    </script>
+</body>
+</html>
